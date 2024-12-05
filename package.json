@@ -1,0 +1,21 @@
+{
+  "name": "@fireproof/vendor",
+  "version": "0.0.0-smoke",
+  "description": "vendor patch repo to support esm",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsx merge-package.ts --prepare --verbose '@ipld/dag-json,https://github.com/mabels/js-dag-json.git,npm' 'cborg,https://github.com/mabels/cborg.git' '@ipld/car' '@ipld/dag-cbor' '@web3-storage/pail' 'ipfs-unixfs-exporter'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jscodeshift": "^0.12.0",
+    "cmd-ts": "^0.13.0",
+    "glob": "^11.0.0",
+    "jscodeshift": "^17.1.1",
+    "tsx": "^4.19.2",
+    "zx": "^8.2.4"
+  }
+}

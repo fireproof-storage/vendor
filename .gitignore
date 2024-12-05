@@ -1,0 +1,5 @@
+.vscode/
+dist/
+**/.github/
+**/patched/
+**/*.tgz

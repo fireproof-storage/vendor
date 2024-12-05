@@ -20,11 +20,11 @@ const replace = {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function(fileInfo: FileInfo, api: API, options: Options) {
-  const orig = fileInfo.source;
-  const oname = path.join(__dirname, 'src/', fileInfo.path.replace('node_modules/', ''))
-  fs.mkdirSync(path.dirname(oname), { recursive: true });
-  fs.writeFileSync(oname,
-   api.jscodeshift(fileInfo.source)
+  //const orig = fileInfo.source;
+  // const oname = path.join(__dirname, 'src/', fileInfo.path.replace('node_modules/', ''))
+  // fs.mkdirSync(path.dirname(oname), { recursive: true });
+  // fs.writeFileSync(oname,
+  return  api.jscodeshift(fileInfo.source)
     .find(ImportDeclaration)
     .map(path => {
       // const node = path.node;
@@ -41,6 +41,6 @@ export default function(fileInfo: FileInfo, api: API, options: Options) {
       // }
       return path//.node as unknown as ASTPath<ASTNode>;
     })
-    .toSource())
-  return orig;
+    .toSource()
+  //return orig;
 }
