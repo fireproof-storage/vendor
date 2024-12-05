@@ -150,7 +150,7 @@ async function main() {
       await fs.mkdir(path.dirname(args.buildPackageJson), { recursive: true });
       const packageJson = JSON.parse(await fs.readFile(args.srcPackageJson, "utf8"));
       patchVersion(packageJson);
-      // await $`find dist -type f -print`
+      await $`pwd ; find "dist/src/@ipld/dag-json" -type f -print`
       for (const packageFile of packages.map(p => `dist/src/${p.name}/package.json`)) {
         const mPackageJson = JSON.parse(await fs.readFile(packageFile, "utf8"));
         mergePackageJson(packageJson, mPackageJson, path.dirname(packageFile), args);
@@ -170,4 +170,7 @@ async function main() {
   await run(cmd, process.argv.slice(2));
 }
 
-main().catch(console.error);
+main().catch((a) => {
+  console.error(a);
+  process.exit(1);
+});
