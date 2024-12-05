@@ -40,7 +40,7 @@ jobs:
         run: |
           git fetch --tags --force
           # we need to have a safe way to store of allowedSigners
-          git config --local --add gpg.ssh.allowedSignersFile ../fireproof/allowed_signers
+          git config --local --add gpg.ssh.allowedSignersFile ./fireproof/allowed_signers
           echo "GITHUB_REF->"$GITHUB_REF
           # test tag signature
           git tag -v $(git describe --tags --abbrev=0)
