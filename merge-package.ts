@@ -33,10 +33,9 @@ async function prepare(packages: PackageOptions[], {buildBase}: CommandArgs) {
     await $`cd ${buildBase} && mkdir -p src/${pkg}`;
     await $`cd ${buildBase} && cp -r node_modules/${pkg}/ src/${pkg}/`;
   }
-  const files = await Promise.all(packages.map(({name}) => name).map(p => `${buildBase}/src/${p}/**/*.[jt]s`)
-    .map(f => glob(f))))
+  const files = (await Promise.all(packages.map(({name}) => name).map(p => `${buildBase}/src/${p}/**/*.[jt]s`).map(f => glob(f))))
     .flat()
-    .filter(f => !f.endsWith(".d.ts")
+    .filter(f => !f.endsWith(".d.ts"));
   await $`jscodeshift --parser=ts -t=./to-esm-transform.ts ${files}`
 }
 
