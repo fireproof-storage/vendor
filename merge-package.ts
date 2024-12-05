@@ -150,6 +150,7 @@ async function main() {
       await fs.mkdir(path.dirname(args.buildPackageJson), { recursive: true });
       const packageJson = JSON.parse(await fs.readFile(args.srcPackageJson, "utf8"));
       patchVersion(packageJson);
+      await $`find dist -type f -print`
       for (const packageFile of packages.map(p => `dist/src/${p.name}/package.json`)) {
         const mPackageJson = JSON.parse(await fs.readFile(packageFile, "utf8"));
         mergePackageJson(packageJson, mPackageJson, path.dirname(packageFile), args);
