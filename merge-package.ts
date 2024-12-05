@@ -33,13 +33,14 @@ async function prepare(packages: PackageOptions[], {buildBase}: CommandArgs) {
     await $`cd ${buildBase} && mkdir -p src/${pkg}`;
     await $`cd ${buildBase} && cp -r node_modules/${pkg}/ src/${pkg}/`;
   }
-  const files = (await Promise.all(packages.map(({name}) => name).map(p => `${buildBase}/src/${p}/**/*.[jt]s`)
-    .map(f => glob(f)))).flat()
-    .filter(f => !f.endsWith(".d.ts"))
+  const files = await Promise.all(packages.map(({name}) => name).map(p => `${buildBase}/src/${p}/**/*.[jt]s`)
+    .map(f => glob(f))))
+    .flat()
+    .filter(f => !f.endsWith(".d.ts")
   await $`jscodeshift --parser=ts -t=./to-esm-transform.ts ${files}`
 }
 
-async function patchVersion(packageJson: Record<string, unknown>) {
+function patchVersion(packageJson: Record<string, unknown>) {
   let version = "refs/tags/v0.0.0-smoke";
   if (process.env.GITHUB_REF && process.env.GITHUB_REF.startsWith("refs/tags/v")) {
     version = process.env.GITHUB_REF;
@@ -60,9 +61,9 @@ function pluginExports(name: string, exports: Exports, srcDir: string, buildBase
   const result: Exports = {};
   // !exports && console.log(">>>>>=", name, srcDir)
   for (const [key, value] of Object.entries(exports || {})) {
-    const pluggedKey = path.join(name, key);
+    const pluggedKey = `./${path.join(name, key)}`;
     result[pluggedKey] = Object.entries(value).reduce((acc, [k, v]) => {
-      acc[k] = path.join(path.relative(buildBase, srcDir), v);
+      acc[k] = `./${path.join(path.relative(buildBase, srcDir), v)}`;
       return acc;
     }, {} as Record<string, string>);
   }
@@ -150,7 +151,7 @@ async function main() {
       await fs.mkdir(path.dirname(args.buildPackageJson), { recursive: true });
       const packageJson = JSON.parse(await fs.readFile(args.srcPackageJson, "utf8"));
       patchVersion(packageJson);
-      await $`find dist -type f -print`
+      // await $`find dist -type f -print`
       for (const packageFile of packages.map(p => `dist/src/${p.name}/package.json`)) {
         const mPackageJson = JSON.parse(await fs.readFile(packageFile, "utf8"));
         mergePackageJson(packageJson, mPackageJson, path.dirname(packageFile), args);
