@@ -11,6 +11,7 @@ const nodeExternals = new Set([
 
 const replace = {
   "cborg": "@fireproof/vendor/cborg",
+  "cborg/utils": "@fireproof/vendor/cborg/utils",
   "cborg/json": "@fireproof/vendor/cborg/json",
   "cborg/length": "@fireproof/vendor/cborg/length",
   "cborg/taglib": "@fireproof/vendor/cborg/taglib",
