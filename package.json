@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "tsx merge-package.ts --prepare --verbose '@ipld/dag-json,https://github.com/mabels/js-dag-json.git,npm' 'cborg,https://github.com/mabels/cborg.git' '@ipld/car' '@ipld/dag-cbor' '@web3-storage/pail' 'ipfs-unixfs-exporter'"
+    "build": "tsx merge-package.ts --prepare --verbose '@ipld/dag-json,https://github.com/mabels/js-dag-json.git,npm' 'cborg,https://github.com/mabels/cborg.git' '@ipld/car,https://github.com/mabels/js-car.git,npm' '@ipld/dag-cbor' '@web3-storage/pail' 'ipfs-unixfs-exporter'"
   },
   "keywords": [],
   "author": "",
