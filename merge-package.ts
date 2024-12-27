@@ -153,6 +153,7 @@ async function main() {
       await $`pwd ; find "dist/src/@ipld/dag-json" -type f -print`
       for (const packageFile of packages.map(p => `dist/src/${p.name}/package.json`)) {
         const mPackageJson = JSON.parse(await fs.readFile(packageFile, "utf8"));
+        fs.unlink(packageFile);
         mergePackageJson(packageJson, mPackageJson, path.dirname(packageFile), args);
       }
       // filter our own packages
