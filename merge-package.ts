@@ -19,12 +19,14 @@ async function prepare(packages: PackageOptions[], {buildBase}: CommandArgs) {
   await $`rm -rf ${buildBase}`;
   await $`mkdir -p ${buildBase}/patched`;
   await $`cp package.json ${buildBase}/package.json`;
-  for (const {name, url, npm} of (packages as GitOptions[]).filter(p => p.type === "git")) {
+
+  await Promise.all(
+  (packages as GitOptions[]).filter(p => p.type === "git").map(async ({name, url, npm}) => {
     await fs.mkdir(`${buildBase}/patched/${name}`, { recursive: true });
     await $`git clone ${url} ${buildBase}/patched/${name}`;
     await $`cd ${buildBase}/patched/${name} && ${npm} install && ${npm} run build && ${npm} pack`;
     await $`cd ${buildBase} && pnpm install -f patched/${name}/*.tgz`;
-  }
+  }))
   for (const {name: pkg, type} of (packages as NamedOptions[])) {
     if (type === "npm") {
       await $`cd ${buildBase} && pnpm install ${pkg}`;
