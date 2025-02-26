@@ -8,9 +8,6 @@
     "build": "tsx merge-package.ts --prepare --verbose '@web3-storage/pail,https://github.com/mabels/pail.git,pnpm'"
   },
   "exports": {
-     ".": {
-       "import": "./index.js"
-     }
   },
   "keywords": [],
   "author": "",
