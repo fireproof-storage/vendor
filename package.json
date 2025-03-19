@@ -7,8 +7,7 @@
   "scripts": {
     "build": "tsx merge-package.ts --prepare --verbose '@web3-storage/pail,https://github.com/mabels/pail.git,pnpm'"
   },
-  "exports": {
-  },
+  "exports": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -19,5 +18,7 @@
     "jscodeshift": "^17.1.1",
     "tsx": "^4.19.2",
     "zx": "^8.2.4"
+  },
+  "dependencies": {
   }
 }
