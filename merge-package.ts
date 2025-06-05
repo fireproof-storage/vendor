@@ -60,13 +60,22 @@ interface PackageJson {
 
 function pluginExports(name: string, exports: Exports, srcDir: string, buildBase): Exports {
   const result: Exports = {};
+  const base = path.relative(buildBase, srcDir)
+  const nested = {}
+  result[`./${name}`] = nested
+  console.log(">>>>>=", name, srcDir)
   // !exports && console.log(">>>>>=", name, srcDir)
   for (const [key, value] of Object.entries(exports || {})) {
-    const pluggedKey = `./${path.join(name, key)}`;
-    result[pluggedKey] = Object.entries(value).reduce((acc, [k, v]) => {
+    // const pluggedKey = `./${path.join(name, key)}`;
+    
+    if (typeof value === 'string') {
+      nested[key] = `./${path.join(path.relative(buildBase, srcDir), value)}`
+    } else {
+    nested[key] = Object.entries(value).reduce((acc, [k, v]) => {
       acc[k] = `./${path.join(path.relative(buildBase, srcDir), v)}`;
       return acc;
     }, {} as Record<string, string>);
+    }
   }
   return result;
 }
